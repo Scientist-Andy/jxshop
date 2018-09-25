@@ -17,6 +17,5 @@ class IndexController{
     public function main(){
         view('index/main');
     }
-
     
 }
