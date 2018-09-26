@@ -6,6 +6,7 @@ class CodeController{
     // 生成代码
     public function make(){
 
+
         // 1 接收参数
         $tableName = $_GET['name'];
 
@@ -23,6 +24,17 @@ class CodeController{
         include(ROOT.'templates/model.php');
         $str = ob_get_clean();
         file_put_contents(ROOT.'models/'.$mname.'.php',"<?php\r\n".$str);
+
+
+
+        $sql = "SHOW FULL FIELDS FROM blogs";
+        $db = \libs\Db::make();
+        // 预处理
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        $fields = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+
 
         // 4 生成视图文件
         @mkdir(ROOT.'views/'.$tableName,0777);
