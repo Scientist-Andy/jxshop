@@ -1,20 +1,10 @@
 namespace models;
 
-class <?=$mname?>{
+class <?=$mname?> extends Model {
 
-    public function insert(){
+    // 这个模型对应的表
+    protected $table = "<?=$tableName?>";
+    // 允许接受的字段
+    protected $fillable = [ '<?=$fillable?>' ];
 
-    }
-
-    public function update(){
-
-    }
-
-    public function delete(){
-
-    }
-
-    public function search(){
-
-    }
 }

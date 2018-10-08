@@ -7,11 +7,36 @@ class CodeController{
     public function make(){
 
 
+
+
         // 1 接收参数
         $tableName = $_GET['name'];
 
+        
+
+        // 取出表中所有字段信息
+        $sql = "SHOW FULL FIELDS FROM $tableName";
+        $db = \libs\Db::make();
+        // 预处理
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        $fields = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        // 收集所有字段的白名单
+        $fillable = [];
+        foreach($fields as $v){
+            if($v['Field']=='id' || $v['Field']=='created_at')
+                continue;
+            $fillable[] = $v['Field'];
+        }
+        $fillable = implode("','",$fillable);
+
+
+
+
         // 2 生成控制器
         $cname = ucfirst($tableName).'Controller';
+        $mname = ucfirst($tableName);
         // == 加载模版 ==
         ob_start();
         include(ROOT.'templates/controller.php');
@@ -24,16 +49,6 @@ class CodeController{
         include(ROOT.'templates/model.php');
         $str = ob_get_clean();
         file_put_contents(ROOT.'models/'.$mname.'.php',"<?php\r\n".$str);
-
-
-
-        $sql = "SHOW FULL FIELDS FROM blogs";
-        $db = \libs\Db::make();
-        // 预处理
-        $stmt = $db->prepare($sql);
-        $stmt->execute();
-        $fields = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-
 
 
         // 4 生成视图文件
