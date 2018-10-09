@@ -95,6 +95,8 @@ class Model{
             'order_by' => 'id',
             'order_way' => 'desc',
             'per_page' => 20,
+            'join'=>'',
+            'groupby'=>'',
         ];
 
         // 合并用户配置
@@ -108,9 +110,12 @@ class Model{
 
         $sql = "SELECT {$_option['fields']}
                 FROM {$this->table}
+                {$_option['join']}
                 WHERE {$_option['where']}
+                {$_option['groupby']}
                 ORDER BY {$_option['order_by']} {$_option['order_way']}
                 LIMIT $offset,{$_option['per_page']}";
+
 
         $stmt = $this->_db->prepare($sql);
         $stmt->execute();
@@ -145,15 +150,37 @@ class Model{
     }
 
     public function fill($data){
-
-
         // 过滤白名单
         foreach($data as $k => $v){
             if(!in_array($k, $this->fillable))
                 unset($data[$k]);
         }
-
-
         $this->data = $data;
     }
+
+
+    public function tree(){
+        // 先取出所有的数据
+        $data = $this->fetchAll();
+        // 递归重新排序
+        $ret = $this->_tree($data['data']);
+        return $ret;
+    }
+
+    protected function _tree($data,$parent_id=0,$level=0){
+        // 定义一个数组保存排序好之后的数据
+        static $_ret = [];
+        foreach($data as $v){
+            if($v['parent_id'] == $parent_id){
+                $v['level'] = $level;
+                $_ret[] = $v;
+                $this->_tree($data,$v['id'],$level+1);
+            }
+        }
+
+        return $_ret;
+    }
+
+
+
 }

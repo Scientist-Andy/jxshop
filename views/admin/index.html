@@ -8,7 +8,7 @@
 </head>
 <body>
 <h1>
-    <span class="action-span"><a href="/<?=$tableName?>/create">添加新记录</a></span>
+    <span class="action-span"><a href="/admin/create">添加新记录</a></span>
     <span class="action-span1"><a href="__GROUP__">管理中心</a></span>
     <span id="search_id" class="action-span1"> - 数据列表 </span>
     <div style="clear:both"></div>
@@ -18,28 +18,26 @@
         <table cellpadding="3" cellspacing="1">
             <tr>
 
-                <?php foreach($fields as $v): ?>
-                    <th><?=$v['Comment']?></th>
-                <?php endforeach; ?>
-                <th>操作</th>
+                                    <th>ID</th>
+                                    <th>用户名</th>
+                                    <th>密码</th>
+                                <th>操作</th>
 
             </tr>
 
 
-            <?='<?php foreach($data as $v): ?>'?>
-
+            <?php foreach($data as $v): ?>
                 <tr>
-                    <?php foreach($fields as $v): ?>
-                        <td align="center"><?='<?=$v[\''.$v['Field'].'\']?>';?></td>
-                    <?php endforeach; ?>
-                    <td align="center">
-                        <a href="/<?=$tableName?>/edit?id=<?='<?=$v[\'id\']?>';?>">修改</a>
-                        <a onclick="return confirm('确定要删除吗？');" href="/<?=$tableName?>/delete?id=<?='<?=$v[\'id\']?>';?>">删除</a>
+                                            <td align="center"><?=$v['id']?></td>
+                                            <td align="center"><?=$v['username']?></td>
+                                            <td align="center"><?=$v['password']?></td>
+                                        <td align="center">
+                        <a href="/admin/edit?id=<?=$v['id']?>">修改</a>
+                        <a onclick="return confirm('确定要删除吗？');" href="/admin/delete?id=<?=$v['id']?>">删除</a>
                     </td>
                 </tr>
 
-            <?='<?php endforeach; ?>'?>
-
+            <?php endforeach; ?>
 
 
         </table>

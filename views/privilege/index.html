@@ -8,7 +8,7 @@
 </head>
 <body>
 <h1>
-    <span class="action-span"><a href="/<?=$tableName?>/create">添加新记录</a></span>
+    <span class="action-span"><a href="/privilege/create">添加新记录</a></span>
     <span class="action-span1"><a href="__GROUP__">管理中心</a></span>
     <span id="search_id" class="action-span1"> - 数据列表 </span>
     <div style="clear:both"></div>
@@ -18,28 +18,28 @@
         <table cellpadding="3" cellspacing="1">
             <tr>
 
-                <?php foreach($fields as $v): ?>
-                    <th><?=$v['Comment']?></th>
-                <?php endforeach; ?>
-                <th>操作</th>
+                                    <th>ID</th>
+                                    <th>权限名称</th>
+                                    <th>对应的URL地址，多个地址用,隔开</th>
+                                    <th>上级权限的ID</th>
+                                <th>操作</th>
 
             </tr>
 
 
-            <?='<?php foreach($data as $v): ?>'?>
-
+            <?php foreach($data as $v): ?>
                 <tr>
-                    <?php foreach($fields as $v): ?>
-                        <td align="center"><?='<?=$v[\''.$v['Field'].'\']?>';?></td>
-                    <?php endforeach; ?>
-                    <td align="center">
-                        <a href="/<?=$tableName?>/edit?id=<?='<?=$v[\'id\']?>';?>">修改</a>
-                        <a onclick="return confirm('确定要删除吗？');" href="/<?=$tableName?>/delete?id=<?='<?=$v[\'id\']?>';?>">删除</a>
+                                            <td align="center"><?=$v['id']?></td>
+                                            <td align="center"><?=$v['pri_name']?></td>
+                                            <td align="center"><?=$v['url_path']?></td>
+                                            <td align="center"><?=$v['parent_id']?></td>
+                                        <td align="center">
+                        <a href="/privilege/edit?id=<?=$v['id']?>">修改</a>
+                        <a onclick="return confirm('确定要删除吗？');" href="/privilege/delete?id=<?=$v['id']?>">删除</a>
                     </td>
                 </tr>
 
-            <?='<?php endforeach; ?>'?>
-
+            <?php endforeach; ?>
 
 
         </table>
